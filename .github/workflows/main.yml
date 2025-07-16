@@ -21,6 +21,8 @@ jobs:
           date +%s > date_file
           cat date_file >> test_output.txt
           docker build -t image`cat date_file` .
+          docker images > docker_images
+          docker rmi image`cat date_file` >> docker_deleted
       - name: Create CML report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -32,4 +34,13 @@ jobs:
           echo "\`\`\`" >> report.md
           echo "metrics from training" >> report.md
           cat metrics.csv >> report.md
+          echo "\`\`\`" >> report.md
+          echo "Expected docker image name" >> report.md
+          echo image`cat date_file` >> report.md
+          echo "\`\`\`" >> report.md
+          echo "Current images" >> report.md
+          cat docker_images >> report.md
+          echo "\`\`\`" >> report.md
+          echo "Docker remove confirmation" >> report.md
+          cat docker_deleted >> report.md
           cml comment create --publish report.md
