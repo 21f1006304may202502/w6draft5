@@ -16,7 +16,9 @@ jobs:
       - name: run unit tests
         run: |
           pip install -r requirements.txt
-          touch test_output.txt
+          gcloud services enable artifactregistry.googleapis.com
+          gcloud artifacts repositories create w6draft-repo --repository-format=docker --location=us-central1 --description="Docker repo for ML models in w6draft"
+          gcloud auth configure-docker us-central1-docker.pkg.dev
           docker build -t iris_api_w6draft .
           docker tag iris_api_w6draft us-central1-docker.pkg.dev/demo0321f1006304/w6draft-repo/iris_api_w6draft:latest
           docker push us-central1-docker.pkg.dev/demo0321f1006304/w6draft-repo/iris_api_w6draft:latest
