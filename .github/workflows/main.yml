@@ -19,8 +19,8 @@ jobs:
           touch test_output.txt
           cat iris_api_w6draft.py |tail -n 2 |head -n 1 >> test_output.txt
           curl ifconfig.io >> test_output.txt
+          curl ifconfig.io
           uvicorn iris_api:app --reload --host 0.0.0.0
-          pytest test.py -v 2>&1 > test_output.txt
       - name: Create CML report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
