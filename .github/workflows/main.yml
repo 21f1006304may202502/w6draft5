@@ -17,10 +17,9 @@ jobs:
         run: |
           pip install -r requirements.txt
           touch test_output.txt
-          cat iris_api_w6draft.py |tail -n 2 |head -n 1 >> test_output.txt
-          curl ifconfig.io >> test_output.txt
-          curl ifconfig.io
-          uvicorn iris_api_w6draft:app --reload --host 0.0.0.0
+          docker build -t iris_api_w6draft .
+          docker tag iris_api_w6draft us-central1-docker.pkg.dev/demo0321f1006304/w6draft-repo/iris_api_w6draft:latest
+          docker push us-central1-docker.pkg.dev/demo0321f1006304/w6draft-repo/iris_api_w6draft:latest
       - name: Create CML report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
