@@ -5,3 +5,4 @@ joblib
 fastapi
 joblib
 uvicorn
+pytest
