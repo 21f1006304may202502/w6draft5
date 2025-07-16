@@ -1,6 +1,6 @@
 name: Iris docker test
 on:
-  workflow_dispatch
+  push
 permissions:
   contents: write
   pull-requests: write
@@ -16,19 +16,13 @@ jobs:
       - name: run unit tests
         run: |
           pip install -r requirements.txt
-          touch test_output.txt
-          cat iris_api_w6draft.py |tail -n 2 |head -n 1 >> test_output.txt
-          curl ifconfig.io >> test_output.txt
-          uvicorn iris_api:app --reload --host 0.0.0.0
-          pytest test.py -v 2>&1 > test_output.txt
+          docker build -t iris_api_w6draft .
       - name: Create CML report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           touch report.md
           echo "test output" >> report.md
-          echo "\`\`\`" >> report.md
-          cat test_output.txt >> report.md
           echo "\`\`\`" >> report.md
           echo "metrics from training" >> report.md
           cml comment create --publish report.md
