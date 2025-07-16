@@ -20,7 +20,7 @@ jobs:
           pytest test/test.py -v 2>&1 > test_output.txt
           date +%s > date_file
           cat date_file >> test_output.txt
-          docker build -t image`cat dat_file` .
+          docker build -t image`cat date_file` .
       - name: Create CML report
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
